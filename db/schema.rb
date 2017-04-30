@@ -13,12 +13,19 @@
 ActiveRecord::Schema.define(version: 20170430160753) do
 
   create_table "menu_categories", force: :cascade do |t|
+    t.integer "restaurant_id"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["restaurant_id"], name: "index_menu_categories_on_restaurant_id"
   end
 
   create_table "menu_items", force: :cascade do |t|
     t.integer "menu_category_id"
+    t.string "name"
+    t.float "price"
+    t.string "image_url"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["menu_category_id"], name: "index_menu_items_on_menu_category_id"
@@ -26,6 +33,10 @@ ActiveRecord::Schema.define(version: 20170430160753) do
 
   create_table "orders", force: :cascade do |t|
     t.integer "restaurant_id"
+    t.integer "status"
+    t.integer "payment_id"
+    t.integer "table_id"
+    t.text "items_list"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["restaurant_id"], name: "index_orders_on_restaurant_id"
@@ -33,18 +44,22 @@ ActiveRecord::Schema.define(version: 20170430160753) do
 
   create_table "payments", force: :cascade do |t|
     t.integer "order_id"
+    t.integer "status"
+    t.string "braintree_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_payments_on_order_id"
   end
 
   create_table "restaurants", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "tables", force: :cascade do |t|
     t.integer "restaurant_id"
+    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["restaurant_id"], name: "index_tables_on_restaurant_id"
