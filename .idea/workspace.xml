@@ -2,10 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d85726c-e8c7-4e72-a0c2-d0981155310b" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.generators" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.rakeTasks" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Development__ezSnacks_API.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Production__ezSnacks_API.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/spec__ezSnacks_API.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/runConfigurations/test__ezSnacks_API.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/concerns/exception_handler.rb" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/models/concerns/response.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/spec/support/request_spec_helper.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ezSnacks-API.iml" afterPath="$PROJECT_DIR$/.idea/ezSnacks-API.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/application_controller.rb" />
@@ -52,7 +60,7 @@
         <entry file="file://$PROJECT_DIR$/spec/requests/menu_items_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="510">
-              <caret line="83" column="154" lean-forward="false" selection-start-line="83" selection-start-column="154" selection-end-line="83" selection-end-column="154" />
+              <caret line="83" column="156" lean-forward="false" selection-start-line="83" selection-start-column="156" selection-end-line="83" selection-end-column="156" />
               <folding />
             </state>
           </provider>
@@ -485,12 +493,12 @@
       <workItem from="1493564007979" duration="6223000" />
       <workItem from="1493578623741" duration="10000" />
       <workItem from="1493578651781" duration="4311000" />
-      <workItem from="1493629284735" duration="5314000" />
+      <workItem from="1493629284735" duration="5511000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15858000" />
+    <option name="totallyTimeSpent" value="16055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -880,7 +888,7 @@
     <entry file="file://$PROJECT_DIR$/spec/requests/menu_items_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
-          <caret line="83" column="154" lean-forward="false" selection-start-line="83" selection-start-column="154" selection-end-line="83" selection-end-column="154" />
+          <caret line="83" column="156" lean-forward="false" selection-start-line="83" selection-start-column="156" selection-end-line="83" selection-end-column="156" />
           <folding />
         </state>
       </provider>

@@ -82,7 +82,6 @@ RSpec.describe 'Menu Items API', type: :request do
 
       it 'returns a failure message' do
         expect(response.body).to match(/Validation failed: Name can't be blank, Description can't be blank, Image url can't be blank, Price can't be blank/)
-        # Come back to this
       end
     end
   end
