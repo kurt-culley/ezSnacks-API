@@ -1,38 +1,42 @@
 class MenuCategoriesController < ApplicationController
 
-  before_action :set_menu_category, only: [:show, :edit, :update, :destroy]
+  before_action :set_restaurant
+  before_action :set_restaurant_menu_category, only: [:show, :update, :destroy]
 
   def index
-    @menu_categories = MenuCategory.all
-    json_response(@menu_categories)
+    json_response(@restaurant.menu_categories)
   end
 
   def create
-    @menu_category = MenuCategory.create!(menu_category_params)
-    json_response(@menu_category, :created)
+    @restaurant_menu_category = @restaurant.menu_categories.create!(menu_category_params)
+    json_response(@restaurant_menu_category, :created)
   end
 
   def show
-    json_response(@menu_category)
+    json_response(@restaurant_menu_category)
   end
 
   def update
-    @menu_category.update(menu_category_params)
+    @restaurant_menu_category.update(menu_category_params)
     head :no_content
   end
 
   def destroy
-    @menu_category.destroy
+    @restaurant_menu_category.destroy
     head :no_content
   end
 
   private
 
     def menu_category_params
-      params.permit(:name)
+      params.permit(:name, :image_url)
     end
 
-    def set_menu_category
-      @menu_category = MenuCategory.find(params[:id])
+    def set_restaurant
+      @restaurant = Restaurant.find(params[:restaurant_id])
+    end
+
+    def set_restaurant_menu_category
+      @restaurant_menu_category = @restaurant.menu_categories.find_by!(id: params[:id]) if @restaurant
     end
 end

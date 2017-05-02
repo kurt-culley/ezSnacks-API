@@ -2,14 +2,16 @@ require 'rails_helper'
 
 RSpec.describe 'Menu Items API', type: :request do
   # Initialize the test data
+  let!(:restaurant) { create(:restaurant) }
   let!(:menu_category) { create(:menu_category) }
   let!(:menu_items) { create_list(:menu_item, 20, menu_category_id: menu_category.id) }
   let(:menu_category_id) { menu_category.id }
+  let(:restaurant_id) { restaurant.id }
   let(:id) { menu_items.first.id }
 
-  # GET /menu_categories/:menu_category_id/menu_items
-  describe 'GET /menu_categories/:menu_category_id/menu_items' do
-    before { get "/menu_categories/#{menu_category_id}/menu_items" }
+  # GET /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items
+  describe 'GET /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items' do
+    before { get "/restaurants/#{restaurant_id}/menu_categories/#{menu_category_id}/menu_items" }
 
     context 'when menu_category exists' do
       it 'returns status code 200' do
@@ -34,9 +36,9 @@ RSpec.describe 'Menu Items API', type: :request do
     end
   end
 
-  # GET /menu_categories/:menu_category_id/menu_items/:id
-  describe 'GET /menu_categories/:menu_category_id/menu_items/:id' do
-    before { get "/menu_categories/#{menu_category_id}/menu_items/#{id}" }
+  # GET /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items/:id
+  describe 'GET /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items/:id' do
+    before { get "/restaurants/#{restaurant_id}/menu_categories/#{menu_category_id}/menu_items/#{id}" }
 
     context 'when menu_category menu_item exists' do
       it 'returns status code 200' do
@@ -61,20 +63,20 @@ RSpec.describe 'Menu Items API', type: :request do
     end
   end
 
-  # POST /menu_categories/:menu_category_id/menu_items
-  describe 'POST /menu_categories/:menu_categories_id/menu_items' do
+  # POST /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items
+  describe 'POST /restaurants/:restaurant_id/menu_categories/:menu_categories_id/menu_items' do
     let(:valid_attributes) { { name: 'Pizza', price: '5', image_url: 'http://test.com/', description: 'Tasty snack.'} }
 
-    context 'when request attributes are valid' do
-      before { post "/menu_categories/#{menu_category_id}/menu_items", params: valid_attributes }
+    context 'when request is valid' do
+      before { post "/restaurants/#{restaurant_id}/menu_categories/#{menu_category_id}/menu_items", params: valid_attributes }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
       end
     end
 
-    context 'when an invalid request' do
-      before { post "/menu_categories/#{menu_category_id}/menu_items", params: {} }
+    context 'when request is invalid' do
+      before { post "/restaurants/#{restaurant_id}/menu_categories/#{menu_category_id}/menu_items", params: {} }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -86,24 +88,24 @@ RSpec.describe 'Menu Items API', type: :request do
     end
   end
 
-  # PUT /menu_categories/:menu_category_id/menu_items/:id
-  describe 'PUT /menu_categories/:menu_category_id/menu_items/:id' do
+  # PUT /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items/:id
+  describe 'PUT /restaurants/restaurant_id/menu_categories/:menu_category_id/menu_items/:id' do
     let(:valid_attributes) { { name: 'Pizza Special', price: '10', image_url: 'http://test.com/', description: 'Pizza.'} }
 
-    before { put "/menu_categories/#{menu_category_id}/menu_items/#{id}", params: valid_attributes }
+    before { put "/restaurants/#{restaurant_id}/menu_categories/#{menu_category_id}/menu_items/#{id}", params: valid_attributes }
 
-    context 'when menu_item exists' do
+    context 'when menu_category menu_item exists' do
       it 'returns status code 204' do
         expect(response).to have_http_status(204)
       end
 
-      it 'updates the menu_item' do
+      it 'updates the menu_category menu_item' do
         updated_item = MenuItem.find(id)
         expect(updated_item.name).to match(/Pizza Special/)
       end
     end
 
-    context 'when the menu_item does not exist' do
+    context 'when the menu_category menu_item does not exist' do
       let(:id) { 0 }
 
       it 'returns status code 404' do
@@ -116,9 +118,9 @@ RSpec.describe 'Menu Items API', type: :request do
     end
   end
 
-  # DELETE /menu_categories/:menu_category_id/menu_items/:id
-  describe 'DELETE /menu_categories/:menu_category_id/menu_items/:id' do
-    before { delete "/menu_categories/#{menu_category_id}/menu_items/#{id}" }
+  # DELETE /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items/:id
+  describe 'DELETE /restaurants/:restaurant_id/menu_categories/:menu_category_id/menu_items/:id' do
+    before { delete "/restaurants/#{restaurant_id}/menu_categories/#{menu_category_id}/menu_items/#{id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

@@ -1,6 +1,7 @@
 class MenuItemsController < ApplicationController
+
   before_action :set_menu_category
-  before_action :set_menu_category_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_menu_category_item, only: [:show, :update, :destroy]
 
   def index
     json_response(@menu_category.menu_items)
