@@ -68,13 +68,13 @@ RSpec.describe 'Orders API', type: :request do
   # POST /restaurants/:restaurant_id/orders
   describe 'POST /restaurants/:restaurant_id/orders' do
     # valid payload
-    let(:valid_attributes) { { status: 1, items_list: ["Pizza", "Pie"], table_id: :table_id } }
+    let(:valid_attributes) { { table_id: :table_id } }
 
     context 'when the request is valid' do
       before { post "/restaurants/#{restaurant_id}/orders", params: valid_attributes }
 
       it 'creates a restaurant order' do
-        expect(json['status']).to eq(1)
+        expect(json['sub_total']).to eq(0)
       end
 
       it 'returns status code 201' do
@@ -83,7 +83,7 @@ RSpec.describe 'Orders API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/restaurants/#{restaurant_id}/orders", params: { status: '', items_list: [], table_id: '' } }
+      before { post "/restaurants/#{restaurant_id}/orders", params: { table_id: '' } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -91,7 +91,7 @@ RSpec.describe 'Orders API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-            .to match(/Validation failed: Status can't be blank, Table can't be blank, Items list can't be blank/)
+            .to match(/Validation failed: Table can't be blank/)
 
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe 'Orders API', type: :request do
 
   # PUT /restaurants/:restaurant_id/orders/:id
   describe 'PUT /restaurants/:restaurant_id/orders/:id' do
-    let(:valid_attributes) { { status: 1, items_list: ["Fish", "Spaghetti"], table_id: :table_id } }
+    let(:valid_attributes) { { table_id: :table_id } }
 
     context 'when the restaurant order exists' do
       before { put "/restaurants/#{restaurant_id}/orders/#{order_id}", params: valid_attributes }
