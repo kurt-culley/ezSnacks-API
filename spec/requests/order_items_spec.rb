@@ -73,7 +73,7 @@ RSpec.describe 'Orders API', type: :request do
   # POST /restaurants/:restaurant_id/orders/:order_id/items
   describe 'POST /restaurants/:restaurant_id/orders/:order_id/items' do
     # valid payload
-    let(:valid_attributes) { { menu_item_id: 2 } }
+    let(:valid_attributes) { { menu_item_id: menu_items.second.id } }
 
     context 'when the request is valid' do
       before { post "/restaurants/#{restaurant_id}/orders/#{order_id}/items", params: valid_attributes }

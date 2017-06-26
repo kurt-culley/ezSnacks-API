@@ -12,8 +12,11 @@
 
 ActiveRecord::Schema.define(version: 20170530115352) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "menu_categories", force: :cascade do |t|
-    t.integer "restaurant_id"
+    t.bigint "restaurant_id"
     t.string "name"
     t.string "image_url"
     t.datetime "created_at", null: false
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20170530115352) do
   end
 
   create_table "menu_items", force: :cascade do |t|
-    t.integer "menu_category_id"
+    t.bigint "menu_category_id"
     t.string "name"
     t.float "price"
     t.string "image_url"
@@ -41,7 +44,7 @@ ActiveRecord::Schema.define(version: 20170530115352) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "restaurant_id"
+    t.bigint "restaurant_id"
     t.integer "status"
     t.integer "table_id"
     t.datetime "created_at", null: false
@@ -50,7 +53,7 @@ ActiveRecord::Schema.define(version: 20170530115352) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer "order_id"
+    t.bigint "order_id"
     t.integer "status"
     t.string "braintree_id"
     t.datetime "created_at", null: false
@@ -65,11 +68,16 @@ ActiveRecord::Schema.define(version: 20170530115352) do
   end
 
   create_table "tables", force: :cascade do |t|
-    t.integer "restaurant_id"
+    t.bigint "restaurant_id"
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["restaurant_id"], name: "index_tables_on_restaurant_id"
   end
 
+  add_foreign_key "menu_categories", "restaurants"
+  add_foreign_key "menu_items", "menu_categories"
+  add_foreign_key "orders", "restaurants"
+  add_foreign_key "payments", "orders"
+  add_foreign_key "tables", "restaurants"
 end
