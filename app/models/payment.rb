@@ -1,5 +1,5 @@
 class Payment < ApplicationRecord
   belongs_to :order
 
-  validates_presence_of :status, :braintree_id
+  validates_presence_of :braintree_id
 end
