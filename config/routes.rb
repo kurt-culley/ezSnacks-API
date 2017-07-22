@@ -15,7 +15,12 @@ Rails.application.routes.draw do
       get 'items' => "order_items#index", as: "order_items"
       delete 'items/:id' => "order_items#destroy"
 
-      resources :payments
+      resources :payments, path: 'payment' do
+        collection do
+          get :client_token
+          get :status
+        end
+      end
     end
   end
 

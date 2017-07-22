@@ -1,4 +1,10 @@
 Rails.application.configure do
+
+  Braintree::Configuration.environment = :sandbox
+  Braintree::Configuration.merchant_id = 'mvp27q47rpbkjzj8'
+  Braintree::Configuration.public_key = 'tn5jbm2ygfp692m2'
+  Braintree::Configuration.private_key = 'd5fca424a90c3631b394f2282071eb5e'
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
