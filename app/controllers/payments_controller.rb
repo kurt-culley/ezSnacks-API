@@ -26,7 +26,7 @@ class PaymentsController < ApplicationController
 
       result = Braintree::Transaction.sale(
           :amount => @order.sub_total,
-          :payment_method_nonce => client_nonce,
+          :payment_method_nonce => 'fake-valid-nonce',
           :options => {
               :submit_for_settlement => true
           }

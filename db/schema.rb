@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(version: 20170530115352) do
 
   create_table "payments", force: :cascade do |t|
     t.bigint "order_id"
-    t.integer "status"
     t.string "braintree_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
