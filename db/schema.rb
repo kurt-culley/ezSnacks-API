@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20170530115352) do
     t.integer "quantity", default: 1
     t.integer "menu_item_id"
     t.integer "order_id"
+    t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

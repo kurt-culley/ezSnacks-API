@@ -4,7 +4,7 @@ class CreateOrderItems < ActiveRecord::Migration[5.1]
       t.integer :quantity, :default => 1
       t.integer :menu_item_id
       t.integer :order_id
-
+      t.integer :status
       t.timestamps
     end
   end
