@@ -4,7 +4,11 @@ class OrderItemsController < ApplicationController
   before_action :set_order_item, only: [:show, :destroy, :add_quantity, :reduce_quantity]
 
   def index
-    json_response(@order.order_items)
+    if @order.order_items.length > 0
+      json_response(@order.order_items)
+    else
+      head :no_content
+    end
   end
 
   def create
@@ -58,6 +62,5 @@ class OrderItemsController < ApplicationController
   def set_order_item
     @order_item = @order.order_items.find_by!(id: params[:id]) if @order
   end
-
 
 end

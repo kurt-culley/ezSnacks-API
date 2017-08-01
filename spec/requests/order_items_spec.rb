@@ -1,25 +1,24 @@
 require 'rails_helper'
 
-RSpec.describe 'Orders API', type: :request do
+RSpec.describe 'Order Item API', type: :request do
   # Initialize test data
   let!(:restaurant) { create(:restaurant) }
   let!(:menu_category) { create(:menu_category, restaurant_id: restaurant.id) }
   let!(:menu_items) { create_list(:menu_item, 2, menu_category_id: menu_category.id) }
   let!(:table) { create(:table, restaurant_id: restaurant.id)}
-  let!(:order) { create(:order, restaurant_id: restaurant.id, table_id: table.id) }
-  let!(:order_item) { create(:order_item, menu_item_id: menu_items.first.id, order_id: order.id)}
+  let!(:orders) { create_list(:order, 2, table_id: table.id) }
+  let!(:order_item) { create(:order_item, menu_item_id: menu_items.first.id, order_id: orders.first.id)}
 
-  let(:restaurant_id) { restaurant.id }
   let(:menu_item_id) {menu_items.first.id}
-  let(:order_id) { order.id }
+  let(:order_id) { orders.first.id }
   let(:order_item_id) {order_item.id}
 
-  # GET /restaurants/:restaurant_id/orders/:order_id/items
-  describe 'GET /restaurants/:restaurant_id/orders/:order_id/items' do
-    before { get "/restaurants/#{restaurant_id}/orders/#{order_id}/items" }
+  # GET /orders/:order_id/items
+  describe 'GET /orders/:order_id/items' do
+    before { get "/orders/#{order_id}/items" }
 
-    context 'when order / items exist' do
-      it 'returns order items' do
+    context 'when items exist' do
+      it 'returns items' do
         expect(json).not_to be_empty
         expect(json.size).to eq(1)
       end
@@ -29,25 +28,21 @@ RSpec.describe 'Orders API', type: :request do
       end
     end
 
-    context 'when order / items do not exist' do
-      let(:order_id) { 0 }
+    context 'when items do not exist' do
+      let(:order_id) { orders.second.id }
 
-      it 'returns status code 404' do
-        expect(response).to have_http_status(404)
-      end
-
-      it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find Order/)
+      it 'returns status code 204' do
+        expect(response).to have_http_status(204)
       end
     end
   end
 
-  # GET /restaurants/:restaurant_id/orders/:order_id/items/:id
-  describe 'GET /restaurants/:restaurant_id/orders/:order_id/items/:id' do
-    before { get "/restaurants/#{restaurant_id}/orders/#{order_id}/items/#{order_item_id}" }
+  # GET /orders/:order_id/items/:id
+  describe 'GET /orders/:order_id/items/:id' do
+    before { get "/orders/#{order_id}/items/#{order_item_id}" }
 
-    context 'when the order item exists' do
-      it 'returns the order item' do
+    context 'when item exists' do
+      it 'returns item' do
         expect(json).not_to be_empty
         expect(json['id']).to eq(order_item_id)
       end
@@ -57,7 +52,7 @@ RSpec.describe 'Orders API', type: :request do
       end
     end
 
-    context 'when the order item does not exist' do
+    context 'when item does not exist' do
       let(:order_item_id) { 100 }
 
       it 'returns status code 404' do
@@ -70,13 +65,13 @@ RSpec.describe 'Orders API', type: :request do
     end
   end
 
-  # POST /restaurants/:restaurant_id/orders/:order_id/items
-  describe 'POST /restaurants/:restaurant_id/orders/:order_id/items' do
+  # POST /orders/:order_id/items
+  describe 'POST /orders/:order_id/items' do
     # valid payload
     let(:valid_attributes) { { menu_item_id: menu_items.second.id } }
 
-    context 'when the request is valid' do
-      before { post "/restaurants/#{restaurant_id}/orders/#{order_id}/items", params: valid_attributes }
+    context 'when request is valid' do
+      before { post "/orders/#{order_id}/items", params: valid_attributes }
 
       it 'creates an order item' do
         expect(json['quantity']).to eq(1)
@@ -87,8 +82,8 @@ RSpec.describe 'Orders API', type: :request do
       end
     end
 
-    context 'when the request is invalid' do
-      before { post "/restaurants/#{restaurant_id}/orders/#{order_id}/items", params: {  } }
+    context 'when request is invalid' do
+      before { post "/orders/#{order_id}/items", params: {  } }
 
       it 'returns status code 404' do
         expect(response).to have_http_status(404)
@@ -100,11 +95,11 @@ RSpec.describe 'Orders API', type: :request do
     end
   end
 
-  # POST /restaurants/:restaurant_id/orders/:order_id/items/:item_id/add
-  describe 'POST /restaurants/:restaurant_id/orders/:order_id/items/:item_id/add' do
+  # POST /orders/:order_id/items/:item_id/add
+  describe 'POST /orders/:order_id/items/:item_id/add' do
 
-    context 'when the order item exists' do
-      before { post "/restaurants/#{restaurant_id}/orders/#{order_id}/items/#{order_item_id}/add" }
+    context 'when order item exists' do
+      before { post "/orders/#{order_id}/items/#{order_item_id}/add" }
 
       it 'increases order item quantity' do
         expect(json['quantity']).to eq(2)
@@ -117,11 +112,11 @@ RSpec.describe 'Orders API', type: :request do
 
   end
 
-  # POST /restaurants/:restaurant_id/orders/:order_id/items/:item_id/reduce
-  describe 'POST /restaurants/:restaurant_id/orders/:order_id/items/:item_id/reduce' do
+  # POST /orders/:order_id/items/:item_id/reduce
+  describe 'POST /orders/:order_id/items/:item_id/reduce' do
 
-    context 'when the order item exists' do
-      before { post "/restaurants/#{restaurant_id}/orders/#{order_id}/items/#{order_item_id}/reduce" }
+    context 'when order item exists' do
+      before { post "/orders/#{order_id}/items/#{order_item_id}/reduce" }
 
       it 'reduces order item quantity' do
         expect(json['quantity']).to eq(0)
@@ -134,9 +129,9 @@ RSpec.describe 'Orders API', type: :request do
 
   end
 
-  # DELETE /restaurants/:restaurant_id/orders/:order_id/items/:item_id
-  describe 'DELETE /restaurants/:restaurant_id/order/:order_id/items/:item_id' do
-    before { delete "/restaurants/#{restaurant_id}/orders/#{order_id}/items/#{order_item_id}" }
+  # DELETE /orders/:order_id/items/:item_id
+  describe 'DELETE /order/:order_id/items/:item_id' do
+    before { delete "/orders/#{order_id}/items/#{order_item_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)

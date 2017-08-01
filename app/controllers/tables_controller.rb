@@ -1,9 +1,13 @@
 class TablesController < ApplicationController
-  before_action :set_restaurant
-  before_action :set_restaurant_table, only: [:show, :update, :destroy]
+  before_action :set_restaurant, only: [:index, :create]
+  before_action :set_table, only: [:show, :update, :destroy]
 
   def index
-    json_response(@restaurant.tables)
+    if @restaurant.tables.length > 0
+      json_response(@restaurant.tables)
+    else
+      head :no_content
+    end
   end
 
   def create
@@ -12,16 +16,16 @@ class TablesController < ApplicationController
   end
 
   def show
-    json_response(@restaurant_table)
+    json_response(@table)
   end
 
   def update
-    @restaurant_table.update(table_params)
+    @table.update(table_params)
     head :no_content
   end
 
   def destroy
-    @restaurant_table.destroy
+    @table.destroy
     head :no_content
   end
 
@@ -35,8 +39,8 @@ class TablesController < ApplicationController
     @restaurant = Restaurant.find(params[:restaurant_id])
   end
 
-  def set_restaurant_table
-    @restaurant_table = @restaurant.tables.find_by!(id: params[:id]) if @restaurant
+  def set_table
+    @table = Table.find(params[:id])
   end
 
 end

@@ -1,10 +1,14 @@
 class MenuItemsController < ApplicationController
 
-  before_action :set_menu_category
-  before_action :set_menu_category_item, only: [:show, :update, :destroy]
+  before_action :set_menu_category, only: [:index, :create]
+  before_action :set_menu_item, only: [:show, :update, :destroy]
 
   def index
-    json_response(@menu_category.menu_items)
+    if @menu_category.menu_items.length > 0
+      json_response(@menu_category.menu_items)
+    else
+      head :no_content
+    end
   end
 
   def create
@@ -13,16 +17,16 @@ class MenuItemsController < ApplicationController
   end
 
   def show
-    json_response(@menu_category_item)
+    json_response(@menu_item)
   end
 
   def update
-    @menu_category_item.update(menu_item_params)
+    @menu_item.update(menu_item_params)
     head :no_content
   end
 
   def destroy
-    @menu_category_item.destroy
+    @menu_item.destroy
     head :no_content
   end
 
@@ -36,8 +40,8 @@ class MenuItemsController < ApplicationController
       @menu_category = MenuCategory.find(params[:menu_category_id])
     end
 
-    def set_menu_category_item
-      @menu_category_item = @menu_category.menu_items.find_by!(id: params[:id]) if @menu_category
+    def set_menu_item
+      @menu_item = MenuItem.find(params[:id])
     end
 
 end

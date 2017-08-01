@@ -1,41 +1,47 @@
 class OrdersController < ApplicationController
-  before_action :set_restaurant
-  before_action :set_restaurant_order, only: [:show, :update, :destroy]
+
+  before_action :set_table, only: [:index, :create]
+  before_action :set_order, only: [:show, :update, :destroy]
 
   def index
-    json_response(@restaurant.orders)
+    if @table.orders.length > 0
+      json_response(@table.orders)
+    else
+      head :no_content
+    end
   end
 
   def create
-    @restaurant_order = @restaurant.orders.create!(menu_category_params)
+    @restaurant_order = @table.orders.create!(order_params)
     json_response(@restaurant_order, :created)
   end
 
   def show
-    json_response(@restaurant_order)
+    json_response(@order)
   end
 
   def update
-    @restaurant_order.update(menu_category_params)
+    @order.update(order_params)
     head :no_content
   end
 
   def destroy
-    @restaurant_order.destroy
+    @order.destroy
     head :no_content
   end
 
   private
 
-  def menu_category_params
+  def order_params
     params.permit(:status, { :items_list => [] }, :table_id)
   end
 
-  def set_restaurant
-    @restaurant = Restaurant.find(params[:restaurant_id])
+  def set_table
+    @table = Table.find(params[:table_id])
   end
 
-  def set_restaurant_order
-    @restaurant_order = @restaurant.orders.find_by!(id: params[:id]) if @restaurant
+  def set_order
+    @order = Order.find(params[:id])
   end
+
 end

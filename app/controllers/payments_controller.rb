@@ -7,14 +7,23 @@ class PaymentsController < ApplicationController
 
   def status
     @payment = Order.find(params[:order_id]).payment
-    @transaction = Braintree::Transaction.find(@payment.braintree_id)
-    @status = { 'status' => @transaction.status}
-    json_response(@status)
+    if @payment
+      @transaction = Braintree::Transaction.find(@payment.braintree_id)
+      @status = { 'status' => @transaction.status}
+      json_response(@status)
+    else
+      head :no_content
+    end
+
   end
 
   def index
     @payment = Order.find(params[:order_id]).payment
-    json_response(@payment)
+    if @payment
+      json_response(@payment)
+    else
+      head :no_content
+    end
   end
 
   def create
@@ -23,6 +32,7 @@ class PaymentsController < ApplicationController
       @payment = @order.build_payment
 
       client_nonce = params[:payment_method_nonce]
+      # Using fake-valid-nonce for testing
 
       result = Braintree::Transaction.sale(
           :amount => @order.sub_total,
@@ -38,11 +48,16 @@ class PaymentsController < ApplicationController
         @order.status = :settling_payment
         @order.save
       end
-
-      head :created
+      json_response(@payment, :created)
     else
       head :conflict
     end
+  end
+
+  def destroy
+    @payment = Payment.find(params[:id])
+    @payment.destroy
+    head :no_content
   end
 
   private

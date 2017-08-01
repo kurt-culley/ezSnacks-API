@@ -1,14 +1,36 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+
+menu_categories = [
+    [ "Hot Drinks", "https://png.icons8.com/cafe/ios7/100" ],
+    [ "Cold Drinks", "https://png.icons8.com/soda-cup/ios7/100" ],
+    [ "Bakery", "https://png.icons8.com/cupcake/ios7/100" ],
+    [ "Snacks", "https://png.icons8.com/nachos/ios7/100" ],
+    [ "Breakfast", "https://png.icons8.com/pancake/ios7/100" ],
+    [ "Lunch", "https://png.icons8.com/pizza/ios7/100" ]
+]
+
+category_items = [
+    [ "Large Coffee", "1L", "https://png.icons8.com/cafe/ios7/100", 2 ],
+    [ "Medium Coffee", "500mL", "https://png.icons8.com/cafe/ios7/100", 1.50 ],
+    [ "Small Coffee", "250mL", "https://png.icons8.com/cafe/ios7/100", 1 ]
+]
 
 restaurant = Restaurant.create(name: "Starbucks")
-menu_category = MenuCategory.create(restaurant_id: restaurant.id,name: "Cookies", image_url: "https://www.pindarcreative.co.uk/images/cookie.png")
-MenuItem.create(menu_category_id: menu_category.id, name: "Chocolate Chip",
-                image_url: "https://www.pindarcreative.co.uk/images/cookie.png", price: 4.2, description: "Chocolate Cookie.")
-MenuItem.create(menu_category_id: menu_category.id, name: "White Chocolate Chip",
-                image_url: "http://www.chatfieldsbrand.com/sites/default/files/DSC_8254-2-cookies.png?1351873685", price: 2, description: "White Chocolate Cookie.")
+
+menu_categories.each do |name, image_url|
+  MenuCategory.create(name: name, image_url: image_url, restaurant_id: restaurant.id)
+end
+
+category_items.each do |name, description, image_url, price|
+  MenuItem.create(name: name, description: description, image_url: image_url,
+                  price: price, menu_category_id: MenuCategory.first.id)
+end
+
+5.times { restaurant.tables.create({"status": 0}) }
+
+restaurant.tables.each do |table|
+  table.orders.create
+end
+
+restaurant.tables.each do |table|
+  table.orders.first.order_items.create({ menu_item_id: rand(1..3) } )
+end

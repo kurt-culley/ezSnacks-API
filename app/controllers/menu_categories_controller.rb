@@ -1,10 +1,14 @@
 class MenuCategoriesController < ApplicationController
 
-  before_action :set_restaurant
-  before_action :set_restaurant_menu_category, only: [:show, :update, :destroy]
+  before_action :set_restaurant, only: [:index, :create]
+  before_action :set_menu_category, only: [:show, :update, :destroy]
 
   def index
-    json_response(@restaurant.menu_categories)
+    if @restaurant.menu_categories.length > 0
+      json_response(@restaurant.menu_categories)
+    else
+      head :no_content
+    end
   end
 
   def create
@@ -13,16 +17,16 @@ class MenuCategoriesController < ApplicationController
   end
 
   def show
-    json_response(@restaurant_menu_category)
+    json_response(@menu_category)
   end
 
   def update
-    @restaurant_menu_category.update(menu_category_params)
+    @menu_category.update(menu_category_params)
     head :no_content
   end
 
   def destroy
-    @restaurant_menu_category.destroy
+    @menu_category.destroy
     head :no_content
   end
 
@@ -36,7 +40,8 @@ class MenuCategoriesController < ApplicationController
       @restaurant = Restaurant.find(params[:restaurant_id])
     end
 
-    def set_restaurant_menu_category
-      @restaurant_menu_category = @restaurant.menu_categories.find_by!(id: params[:id]) if @restaurant
+    def set_menu_category
+      @menu_category = MenuCategory.find(params[:id])
     end
+
 end

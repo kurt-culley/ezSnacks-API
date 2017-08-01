@@ -3,7 +3,11 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.all
-    json_response(@restaurants)
+    if @restaurants.length > 0
+      json_response(@restaurants)
+    else
+      head :no_content
+    end
   end
 
   def create
@@ -23,6 +27,15 @@ class RestaurantsController < ApplicationController
   def destroy
     @restaurant.destroy
     head :no_content
+  end
+
+  def orders
+    @restaurant = Restaurant.find(params[:restaurant_id])
+    if @restaurant.orders.length > 0
+      json_response(@restaurant.orders)
+    else
+      head :no_content
+    end
   end
 
   private

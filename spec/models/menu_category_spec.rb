@@ -4,6 +4,7 @@ RSpec.describe MenuCategory, type: :model do
 
   # Association
   it { should have_many(:menu_items) }
+  it { should belong_to(:restaurant) }
 
   # Validation
   it { should validate_presence_of(:name) }

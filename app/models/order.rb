@@ -1,8 +1,8 @@
 class Order < ApplicationRecord
-  belongs_to :restaurant
+  belongs_to :table
   has_many :order_items, -> { order(created_at: :asc) }, dependent: :destroy
-  has_many :menu_items, through: :order_items
-  has_one :payment
+  has_many :menu_items, through: :order_items, dependent: :destroy
+  has_one :payment, dependent: :destroy
 
   after_initialize :set_default_status, :if => :new_record?
   validates_presence_of :table_id, :status
