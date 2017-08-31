@@ -1,7 +1,7 @@
 class OrderItemsController < ApplicationController
 
   before_action :set_order
-  before_action :set_order_item, only: [:show, :destroy, :add_quantity, :reduce_quantity]
+  before_action :set_order_item, only: [:show, :update, :destroy, :add_quantity, :reduce_quantity]
 
   def index
     if @order.order_items.length > 0
@@ -26,6 +26,11 @@ class OrderItemsController < ApplicationController
 
   def show
     json_response(@order_item)
+  end
+
+  def update
+    @order_item.update(order_item_params)
+    head :no_content
   end
 
   def destroy
