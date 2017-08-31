@@ -57,7 +57,7 @@ class OrderItemsController < ApplicationController
   private
 
   def order_item_params
-    params.permit(:quantity, :menu_item_id)
+    params.permit(:quantity, :menu_item_id, :status)
   end
 
   def set_order
